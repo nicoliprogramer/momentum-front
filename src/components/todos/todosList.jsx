@@ -1,12 +1,10 @@
-import { FC, useState } from "react";
+import { FC } from "react";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
-import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Checkbox from "@mui/material/Checkbox";
-import Avatar from "@mui/material/Avatar";
-import { Grid, Stack } from "@mui/material";
+import { Grid, Typography } from "@mui/material";
 
 type TodosProps = {
   id: Number,
@@ -16,7 +14,7 @@ type TodosProps = {
   hour: String,
 };
 
-export const CheckboxListSecondary: FC<TodosProps> = ({
+export const TodosList: FC<TodosProps> = ({
   id,
   text,
   isCompleted,
@@ -25,28 +23,35 @@ export const CheckboxListSecondary: FC<TodosProps> = ({
 }) => {
 
   return (
+        <>
         <List
-        style={{ display: 'flex', flexDirection: 'row', padding: 0 }}
-          dense
           sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper"}}
         >
-          <ListItem
-            key={id}
-            secondaryAction={
-              <Checkbox
-                edge="end"
-                inputProps={{ "aria-labelledby": isCompleted }}
-              />
-            }
-            disablePadding
-          >
-            <ListItemButton> 
-              <ListItemText
-                id={id}
-                primary={`${text}`}
-              />
-            </ListItemButton>
-          </ListItem>
-        </List>
+           <ListItem
+           alignItems="center"
+             key={id}
+             secondaryAction={
+               <Checkbox
+                 edge="end"
+                 inputProps={{ "aria-labelledby": isCompleted }}
+               />
+             }
+             disablePadding
+           >
+             <ListItemButton> 
+               <ListItemText
+                 id={id}
+                 primary={`${text}`}
+               />
+             </ListItemButton>
+           </ListItem>
+             <Grid ml={2}>
+              <Typography variant="caption">
+                      {hour}
+              </Typography>
+              </Grid>
+              </List>
+            </>
+           
   );
 };
