@@ -1,8 +1,7 @@
 export interface Typetodo{
     id: Number,
-    text: String,
-    isCompleted: Boolean,
-    isToday: Boolean,
-    hour: String,
+    title: String,
+    Completed: Boolean,
+    shared_with_id: number
 }
 
