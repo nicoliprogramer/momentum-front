@@ -1,4 +1,4 @@
-import { FC } from "react";
+import React, { FC } from "react";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
@@ -24,7 +24,15 @@ export const TodosList: FC<TodosProps> = ({
   shared_with_id,
 }) => {
 
-  
+  const [selectedIndex, setSelectedIndex] = React.useState(1);
+
+  const handleListItemClick = (
+    event: React.MouseEvent<HTMLDivElement, MouseEvent>,
+    index: number,
+  ) => {
+    setSelectedIndex(index);
+  };
+
   return (
         <>
         <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
@@ -37,24 +45,18 @@ export const TodosList: FC<TodosProps> = ({
             }
             disablePadding
           >
-            <ListItemButton>
-              
+            <ListItemButton 
+            selected={selectedIndex === 0}
+            onClick={(event) => handleListItemClick(event, 1)}>
               <ListItemIcon>
                 <Checkbox
                    edge="end"
                  inputProps={{ "aria-labelledby": Completed === 0 ? "#E9E9EF" : "#0EA5E9" }}
                 />
-                
               </ListItemIcon>
-              
               <ListItemText primary={`${title}`} />
-
             </ListItemButton>
-            
           </ListItem>
-          <Grid ml={9}>
-            {/* <ListItemText secondary={`${hour}`}/> */}
-          </Grid>
         </List>
             </>
   );

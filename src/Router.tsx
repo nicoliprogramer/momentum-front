@@ -5,10 +5,8 @@ import { HomePage } from "./pages/home";
 export const AppRouter: FC<{}> = () => {
 
     return (
-        <Routes>    
-                        
-                    <Route path="/" element={<HomePage/>}/>
-                        
+        <Routes>      
+            <Route path="/" element={<HomePage/>}/>       
         </Routes>
     )
 }
