@@ -19,9 +19,10 @@ export const createTodo = createAsyncThunk(
   'todos/CREATE_TODO',
   async (body: any, {dispatch}: any): Promise<void> => {
     try {
-      const response = await axiosInternal.post("/todos", body)
+      const response = await axiosInternal.post("/todos/create", body)
     if(response.status === 200 || response.status === 201){
         console.log("todo created");
+        return response.data
     }
     } catch (error) {
           const err:any=error;
@@ -37,9 +38,16 @@ export const todosSlice = createSlice({
   name: 'todos',
   initialState,
   reducers: {
+    },
+    extraReducers: builder  =>{
+      builder
+      .addCase(createTodo.fulfilled,(state: any,action: any) => {
+        state = action.payload
+      })
+      .addCase(createTodo.rejected,(state: any,action: any) => {
+        state = ""
+      })
     }
 })
 
-export const { } = todosSlice.actions;
-
-export default todosSlice.reducer;
+export const todosReducer = todosSlice.reducer;

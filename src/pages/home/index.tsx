@@ -4,16 +4,16 @@ import {TodosList} from "../../components/todos/todosList"
 import { Typetodo } from "./interface/todo.interface"
 import { todos } from "../../api/todos"
 import SendIcon from '@mui/icons-material/Send';
-import {useDispatch, useSelector } from 'react-redux'
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { createTodo } from "../../redux/slices/todosSlice"
 
 type TodoType = { 
     user_id: string,
     title: string
 }
-export const HomePage: FC = () => {
+export const HomePage: FC<{}> = () => {
 
-        const dispatch = useDispatch()
+        const dispatch = useAppDispatch()
 
         const [page] = useState(0)
         const [allTodo, setAllTodo]= useState<Typetodo[]>([])
@@ -29,62 +29,67 @@ export const HomePage: FC = () => {
     }, [page])
 
 const dataTodo = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setMessageBody({...messageBody, [e.target.name]: e.target.value})
+        setMessageBody({...messageBody, user_id: "1", [e.target.name]: e.target.value})
+        
     }
 
-// const handleSubmit =(e: React.FormEvent<HTMLInputElement>) => {
-//     e.preventDefault()
-
-//     dispatch(createTodo(messageBody))
-//     }
+const handleSubmit =(e: React.FormEvent<HTMLInputElement>) => {
+    dispatch(createTodo(messageBody)).then(()=> {
+        e.preventDefault()
+    })
+     }
 
     return( <>
         <Container  maxWidth="xs">
         <Paper elevation={3}>
             <Box p={3}>
-            <Grid display="flex" alignItems="center" justifyContent="center" container sx={{mb:1}}>
-                <Typography variant="h5">
-                    Today
-                </Typography>
-            </Grid>
-                            <Divider/>
+                <Grid display="flex" alignItems="center" justifyContent="center" container sx={{mb:1}}>
+                    <Typography variant="h5">
+                        Today
+                    </Typography>
+                </Grid>
+                    
+                <Divider/>
 
-            <Grid item display="flex" 
-                alignItems="center"
-                justifyContent="center">
-                <div>
-                        {allTodo.length !== 0 ? (
-                            <>
-                                {allTodo?.map((t) => (
-                                    <Grid container>
-                                            <TodosList id={t.id} title={t.title} Completed={t.Completed} shared_with_id={t.shared_with_id}/>
-                                    </Grid>
-                                ))}
-                            </>
-                        ) : ""}
-                </div>
-            </Grid>
-            <Grid container display="flex" alignItems="center" justifyContent="center" sx={{mt:1}}>
-                <Grid>
-                        <FormControl sx={{ width: '35ch' }}>
-                            <TextField id="filled-hidden-label-small"
-                                defaultValue="Small"
-                                placeholder="Write a new task"
-                                variant="outlined"
-                                size="small"
-                                onChange={dataTodo}>
-                                
-                            </TextField>
-                        </FormControl>
+                <Grid item display="flex" 
+                    alignItems="center"
+                    justifyContent="center">
+                    <div>
+                            {allTodo.length !== 0 ? (
+                                <>
+                                    {allTodo?.map((t) => (
+                                        <Grid container>
+                                                <TodosList id={t.id} title={t.title} Completed={t.Completed} shared_with_id={t.shared_with_id}/>
+                                        </Grid>
+                                    ))}
+                                </>
+                            ) : ""}
+                    </div>
                 </Grid>
-                <Grid>
-                    <IconButton
-                        aria-label="send"
-                        color="primary"                        >
-                            <SendIcon />
-                    </IconButton>
-                </Grid>
-            </Grid>
+                
+                <Box component="form" onSubmit={handleSubmit}>
+                    <Grid item display="flex" 
+                    alignItems="center"
+                    justifyContent="center">
+
+                            <FormControl sx={{ width: '32ch' }}>
+                                <TextField id="filled-hidden-label-small"
+                                    placeholder="Write a new task"
+                                    variant="outlined"
+                                    size="small"
+                                    name="title"
+                                    onChange={dataTodo}>
+                                </TextField>
+                            </FormControl>
+                   
+                            <IconButton
+                            aria-label="send"
+                            color="primary"
+                            type="submit">
+                                <SendIcon />
+                        </IconButton>
+                    </Grid>
+                </Box>
             </Box>
         </Paper>
         </Container>
