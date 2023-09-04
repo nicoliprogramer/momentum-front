@@ -34,19 +34,30 @@ export const createTodo = createAsyncThunk(
     }
 );
 
+export const deleteTodo = createAsyncThunk(
+  'todos/DELETE_TODO',
+  async (id: any, {dispatch}: any): Promise<void> => {
+    try {
+      const response = await axiosInternal.delete(`/todos/${id}`)
+    if(response.status === 200 || response.status === 201){
+        console.log("todo deleted");
+        return response.data
+    }
+    } catch (error) {
+          const err:any=error;
+          if(err.response.status === 400){
+            console.log("err", error)
+              throw new Error("User not found")
+          }
+    }
+    }
+);
+
+
 export const todosSlice = createSlice({
   name: 'todos',
   initialState,
   reducers: {
-    },
-    extraReducers: builder  =>{
-      builder
-      .addCase(createTodo.fulfilled,(state: any,action: any) => {
-        state = action.payload
-      })
-      .addCase(createTodo.rejected,(state: any,action: any) => {
-        state = ""
-      })
     }
 })
 
