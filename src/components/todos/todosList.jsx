@@ -4,7 +4,6 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import Checkbox from "@mui/material/Checkbox";
-import { Grid } from "@mui/material";
 import IconButton from '@mui/material/IconButton';
 import GroupAddSharpIcon from '@mui/icons-material/GroupAddSharp';
 import ListItemIcon from '@mui/material/ListItemIcon';
@@ -12,11 +11,11 @@ import ReplyIcon from '@mui/icons-material/Reply';
 import { useAppDispatch } from "../../redux/hooks";
 import Swal from 'sweetalert2'
 import { deleteTodo } from "../../redux/slices/todosSlice";
-
+import { updateTodo } from "../../redux/slices/todosSlice";
 type TodosProps = {
   id: Number,
   title: String,
-  Completed: Boolean,
+  completed: Boolean,
   shared_with_id: Number
  };
 
@@ -24,7 +23,7 @@ type TodosProps = {
 export const TodosList: FC<TodosProps> = ({
   id,
   title,
-  Completed,
+  completed,
   shared_with_id,
 }) => {
 
@@ -33,7 +32,7 @@ export const TodosList: FC<TodosProps> = ({
   const [selectedIndex, setSelectedIndex] = React.useState(1);
 
   const handleListItemClick = (
-    e:  MouseEvent<Element, MouseEvent>, // 
+    e:  MouseEvent<Element, MouseEvent>,
     id: number,
   ) => {
     Swal.fire({
@@ -58,6 +57,12 @@ export const TodosList: FC<TodosProps> = ({
 })
   };
 
+  const handleCheckboxClick = () => {
+    completed === 0 ? completed = true : completed = false
+    const data = {id, completed}
+    dispatch(updateTodo(data))
+  }
+
   return (
         <>
         <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
@@ -71,15 +76,16 @@ export const TodosList: FC<TodosProps> = ({
             disablePadding
           >
             <ListItemButton 
-            selected={selectedIndex === 0}
-            onClick={(event) => handleListItemClick(event, id)}>
+            selected={selectedIndex === 0}>
               <ListItemIcon>
                 <Checkbox
-                   edge="end"
-                 inputProps={{ "aria-labelledby": Completed === 0 ? "#E9E9EF" : "#0EA5E9" }}
+                 edge="end"
+                 defaultChecked={ completed === 1 ? true : false}
+                 onClick={() => handleCheckboxClick(id, completed)}
                 />
               </ListItemIcon>
-              <ListItemText primary={`${title}`} />
+              <ListItemText primary={`${title}`} 
+              onClick={(event) => handleListItemClick(event, id)}/>
             </ListItemButton>
           </ListItem>
         </List>

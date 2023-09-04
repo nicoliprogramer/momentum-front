@@ -53,6 +53,27 @@ export const deleteTodo = createAsyncThunk(
     }
 );
 
+export const updateTodo = createAsyncThunk(
+  'todos/UPDATE_TODO',
+  async (data: any, {dispatch}: any): Promise<void> => {
+    try {
+      console.log("data.id", data.id);
+      console.log("data.completed", data.completed);
+      
+      const response = await axiosInternal.put(`/todos/${data.id}`,{ completed: data.completed})
+    if(response.status === 200 || response.status === 201){
+        console.log("todo is completed or not completed");
+        return response.data
+    }
+    } catch (error) {
+          const err:any=error;
+          if(err.response && err.response.status === 400){
+            console.log("err", error)
+              throw new Error("User not found")
+          }
+    }
+    }
+);
 
 export const todosSlice = createSlice({
   name: 'todos',

@@ -59,7 +59,7 @@ const handleSubmit =(e: React.FormEvent<HTMLInputElement>) => {
                                 <>
                                     {allTodo?.map((t) => (
                                         <Grid container>
-                                                <TodosList id={t.id} title={t.title} Completed={t.Completed} shared_with_id={t.shared_with_id}/>
+                                                <TodosList id={t.id} title={t.title} completed={t.completed} shared_with_id={t.shared_with_id}/>
                                         </Grid>
                                     ))}
                                 </>
