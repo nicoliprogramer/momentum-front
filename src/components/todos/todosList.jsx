@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import { FC, useState } from "react";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
@@ -12,11 +12,14 @@ import { useAppDispatch } from "../../redux/hooks";
 import Swal from 'sweetalert2'
 import { deleteTodo } from "../../redux/slices/todosSlice";
 import { updateTodo } from "../../redux/slices/todosSlice";
+import { shareTodo } from "../../redux/slices/todosSlice";
+
 type TodosProps = {
   id: Number,
   title: String,
   completed: Boolean,
-  shared_with_id: Number
+  shared_with_id: Number,
+  user_id: Number
  };
 
  
@@ -25,11 +28,12 @@ export const TodosList: FC<TodosProps> = ({
   title,
   completed,
   shared_with_id,
+  user_id
 }) => {
 
   const dispatch = useAppDispatch()
 
-  const [selectedIndex, setSelectedIndex] = React.useState(1);
+  const [selectedIndex, setSelectedIndex] = useState(1);
 
   const handleListItemClick = (
     e:  MouseEvent<Element, MouseEvent>,
@@ -62,7 +66,33 @@ export const TodosList: FC<TodosProps> = ({
     const data = {id, completed}
     dispatch(updateTodo(data))
   }
+  
+  const handleShareClick = () => {
+    Swal.fire({
+    title: 'Share task with user...',
+    input: 'text',
+    inputAttributes: {
+      autocapitalize: 'off'
+    },
+    showCancelButton: true,
+    confirmButtonText: 'Search',
+    showLoaderOnConfirm: true,
+    allowOutsideClick: () => !Swal.isLoading()
+  }).then((result) => {
+    if (result.isConfirmed) {
+      Swal.fire({
+        title: `ha sido compartido con exito`
+      })
+    }
+    const shareToUser = result.value
+    const data = {id, user_id, shareToUser}
+    console.log("result.value",data);
+    dispatch(shareTodo(data)).then(()=> {
+      console.log("SAdasdas", data);
+    })
 
+})
+  }
   return (
         <>
         <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
@@ -70,7 +100,7 @@ export const TodosList: FC<TodosProps> = ({
             key={id}
             secondaryAction={
               <IconButton edge="end">
-                {shared_with_id !== null ? (<GroupAddSharpIcon />) : (<ReplyIcon/>)}
+                {shared_with_id !== null ? (<GroupAddSharpIcon />) : (<ReplyIcon onClick={() => handleShareClick(id, user_id)}/>)}
               </IconButton>
             }
             disablePadding
@@ -80,7 +110,7 @@ export const TodosList: FC<TodosProps> = ({
               <ListItemIcon>
                 <Checkbox
                  edge="end"
-                 defaultChecked={ completed === 1 ? true : false}
+                 defaultChecked={ completed === 1 }
                  onClick={() => handleCheckboxClick(id, completed)}
                 />
               </ListItemIcon>

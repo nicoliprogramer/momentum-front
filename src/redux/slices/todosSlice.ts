@@ -57,9 +57,6 @@ export const updateTodo = createAsyncThunk(
   'todos/UPDATE_TODO',
   async (data: any, {dispatch}: any): Promise<void> => {
     try {
-      console.log("data.id", data.id);
-      console.log("data.completed", data.completed);
-      
       const response = await axiosInternal.put(`/todos/${data.id}`,{ completed: data.completed})
     if(response.status === 200 || response.status === 201){
         console.log("todo is completed or not completed");
@@ -74,6 +71,26 @@ export const updateTodo = createAsyncThunk(
     }
     }
 );
+
+export const shareTodo = createAsyncThunk(
+  'todos/SHARE_TODO',
+  async (data: any, {dispatch}: any): Promise<void> => {
+    try { 
+      const response = await axiosInternal.post(`/todos/shared_todos`,{ todo_id: data.id, user_id: data.user_id, email: data.shareToUser})
+    if(response.status === 200 || response.status === 201){
+        console.log("todo shared");
+        return response.data
+    }
+    } catch (error) {
+          const err:any=error;
+          if(err.response && err.response.status === 400){
+            console.log("err", error)
+              throw new Error("User not found")
+          }
+    }
+    }
+);
+
 
 export const todosSlice = createSlice({
   name: 'todos',
