@@ -10,9 +10,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ReplyIcon from '@mui/icons-material/Reply';
 import { useAppDispatch } from "../../redux/hooks";
 import Swal from 'sweetalert2'
-import { deleteTodo } from "../../redux/slices/todosSlice";
-import { updateTodo } from "../../redux/slices/todosSlice";
-import { shareTodo } from "../../redux/slices/todosSlice";
+import { deleteTodo, updateTodo, shareTodo, verifyUsers } from "../../redux/slices/todosSlice";
 
 type TodosProps = {
   id: Number,
@@ -77,6 +75,23 @@ export const TodosList: FC<TodosProps> = ({
     showCancelButton: true,
     confirmButtonText: 'Search',
     showLoaderOnConfirm: true,
+    preConfirm: (login) => {
+      console.log("login", login);
+      dispatch(verifyUsers(login))
+      .then(response => {
+        console.log("response", response);
+        if (response.status === 201) {
+          console.log("JUAAAAAZ");
+          throw new Error(response.statusText)
+        }
+        return response.json()
+      })
+      .catch(error => {
+        Swal.showValidationMessage(
+          `Request failed: ${error}`
+        )
+      })
+  },
     allowOutsideClick: () => !Swal.isLoading()
   }).then((result) => {
     if (result.isConfirmed) {
@@ -84,12 +99,11 @@ export const TodosList: FC<TodosProps> = ({
         title: `ha sido compartido con exito`
       })
     }
-    const shareToUser = result.value
-    const data = {id, user_id, shareToUser}
-    console.log("result.value",data);
-    dispatch(shareTodo(data)).then(()=> {
-      console.log("SAdasdas", data);
-    })
+    // const shareToUser = result.value
+    // const data = {id, user_id, shareToUser}
+    // dispatch(shareTodo(data)).then(()=> {
+    //   console.log("SAdasdas", data);
+    // })
 
 })
   }
