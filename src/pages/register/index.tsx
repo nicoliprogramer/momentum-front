@@ -1,4 +1,4 @@
-import {Grid, Paper, Box, Typography, TextField,Avatar, Button, FormControlLabel } from "@mui/material";
+import {Grid, Paper, Box, Typography, TextField,Avatar, Button, FormControlLabel, Link } from "@mui/material";
 import { useForm, SubmitHandler } from 'react-hook-form';
 import React, { useState, FC, useEffect} from "react";
 import { literal, object, string, TypeOf } from 'zod';
@@ -7,7 +7,7 @@ import Checkbox from '@mui/material/Checkbox';
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { signUp } from "../../redux/slices/todosSlice";
 import { useNavigate } from "react-router-dom";
-import ChecklistRtlIcon from '@mui/icons-material/ChecklistRtl';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
 
 
     const paperStyle = { padding: '30px 20px', width: 300, margin: "20px auto" }
@@ -86,7 +86,7 @@ export const RegisterPage: FC<{}> = () => {
         <Paper style={paperStyle}>
                 <Grid direction="column" alignItems="center" justifyContent="center">
                     <Avatar style={avatarStyle}>
-                        <ChecklistRtlIcon />
+                        <PersonAddIcon />
                     </Avatar>
                     <h2 style={headerStyle}>Sign Up</h2>
                     <Typography variant='caption' gutterBottom>Please fill this form to create an account !</Typography>
@@ -101,6 +101,7 @@ export const RegisterPage: FC<{}> = () => {
                         {...register('terms')}
                         label="I accept the terms and conditions."
                     />
+                    <Typography sx={{mt:1, mb:1}} fontSize="15px" variant="body2"><Link href="/login">Do you already have an account? Enter here.</Link></Typography>
                 <Button type='submit' variant='contained' color='primary'>Sign up</Button>
                 </form>
             </Paper>
