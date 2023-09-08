@@ -1,6 +1,5 @@
 import {createSlice, createAsyncThunk} from "@reduxjs/toolkit"
 import { axiosInternal } from '../../api/todos.api';
-import Swal from "sweetalert2";
 
 interface Todo {
     id: number,
@@ -15,61 +14,6 @@ const initialState: todosState = {
     todos: []
 };
 
-export const signUp = createAsyncThunk(
-  'todos/SIGN_UP',
-  async (body: any, {dispatch}: any): Promise<void> => {
-    try {
-      console.log("body", body);
-      const response = await axiosInternal.post(`/users/register`, body )
-    if(response.status === 200 || response.status === 201){
-       Swal.fire({
-                title: 'Bienvenido!',
-                text: 'you are part of the team',
-                icon: 'success',
-                showConfirmButton: false,
-                timer: 1400
-              })
-      
-        localStorage.setItem("token", response.data.token)
-        return response.data
-    }
-    } catch (error) {
-          const err:any=error;
-          if(err.response && err.response.status === 400){
-            console.log("err", error)
-              throw new Error("User not found")
-          }
-    }
-    }
-);
-
-export const signIn = createAsyncThunk(
-  'todos/SIGN_IN',
-  async (body: any, {dispatch}: any): Promise<void> => {
-    try {
-      console.log("body", body);
-      const response = await axiosInternal.post(`/auth/login`, body )
-      if(response.status === 200 || response.status === 201){
-        Swal.fire({
-                  title: 'Bienvenido!',
-                  text: 'you are part of the team',
-                  icon: 'success',
-                  showConfirmButton: false,
-                  timer: 1400
-                })
-        
-          localStorage.setItem("token", response.data.token)
-          return response.data
-    }
-    } catch (error) {
-          const err:any=error;
-          if(err.response && err.response.status === 400){
-            console.log("err", error)
-              throw new Error("User not found")
-          }
-    }
-    }
-);
 
 export const createTodo = createAsyncThunk(
   'todos/CREATE_TODO',

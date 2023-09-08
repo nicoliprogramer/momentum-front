@@ -5,7 +5,7 @@ import { literal, object, string, TypeOf } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Checkbox from '@mui/material/Checkbox';
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
-import { signUp } from "../../redux/slices/todosSlice";
+import { signUp } from "../../redux/slices/authSlice";
 import { useNavigate } from "react-router-dom";
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 
@@ -13,8 +13,6 @@ import PersonAddIcon from '@mui/icons-material/PersonAdd';
     const paperStyle = { padding: '30px 20px', width: 300, margin: "20px auto" }
     const avatarStyle = { backgroundColor: '#1bbd7e' }
     const headerStyle = { margin: 0 }
-    const marginTop = { marginTop: 5 }
-    
 const registerSchema = object({
   username: string()
     .nonempty('Name is required')
@@ -50,7 +48,7 @@ export const RegisterPage: FC<{}> = () => {
         password: ""
     })
 
-  const {token} = useAppSelector((state): any => state.todos)
+  const {token} = useAppSelector((state): any => state.auth)
 
     const {
     register,
@@ -66,7 +64,8 @@ export const RegisterPage: FC<{}> = () => {
       reset();
     }
      if(token) {
-        navigate("/")
+        navigate("/login")
+        console.log("token", token);
       }
   }, [isSubmitSuccessful, reset, token]);
 
@@ -75,8 +74,7 @@ export const RegisterPage: FC<{}> = () => {
     }
 
 
-  const onSubmitHandler: SubmitHandler<RegisterInput> = (values) => {
-    console.log("registerData", registerData);
+  const onSubmitHandler: SubmitHandler<RegisterInput> = () => {
     dispatch(signUp(registerData))
 
   };

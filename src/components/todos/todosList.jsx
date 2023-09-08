@@ -65,6 +65,7 @@ export const TodosList: FC<TodosProps> = ({
     dispatch(updateTodo(data))
   }
   
+  
   const handleShareClick = () => {
     Swal.fire({
     title: 'Share task with user...',
@@ -75,23 +76,6 @@ export const TodosList: FC<TodosProps> = ({
     showCancelButton: true,
     confirmButtonText: 'Search',
     showLoaderOnConfirm: true,
-    preConfirm: (login) => {
-      console.log("login", login);
-      dispatch(verifyUsers(login))
-      .then(response => {
-        console.log("response", response);
-        if (response.status === 201) {
-          console.log("JUAAAAAZ");
-          throw new Error(response.statusText)
-        }
-        return response.json()
-      })
-      .catch(error => {
-        Swal.showValidationMessage(
-          `Request failed: ${error}`
-        )
-      })
-  },
     allowOutsideClick: () => !Swal.isLoading()
   }).then((result) => {
     if (result.isConfirmed) {
@@ -99,14 +83,17 @@ export const TodosList: FC<TodosProps> = ({
         title: `ha sido compartido con exito`
       })
     }
-    // const shareToUser = result.value
-    // const data = {id, user_id, shareToUser}
-    // dispatch(shareTodo(data)).then(()=> {
-    //   console.log("SAdasdas", data);
-    // })
+    const shareToUser = result.value
+    const data = {id, user_id, shareToUser}
+    console.log("result.value",data);
+    dispatch(shareTodo(data)).then(()=> {
+      console.log("SAdasdas", data);
+    })
 
 })
   }
+
+  
   return (
         <>
         <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
@@ -124,7 +111,7 @@ export const TodosList: FC<TodosProps> = ({
               <ListItemIcon>
                 <Checkbox
                  edge="end"
-                 defaultChecked={ completed === 1 }
+                 defaultChecked={ completed === 1 ? true : false}
                  onClick={() => handleCheckboxClick(id, completed)}
                 />
               </ListItemIcon>

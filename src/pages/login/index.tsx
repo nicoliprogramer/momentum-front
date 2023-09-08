@@ -9,7 +9,7 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import {  object, string, TypeOf } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Avatar } from "@material-ui/core";
-import { signIn } from "../../redux/slices/todosSlice";
+import { signIn } from "../../redux/slices/authSlice";
 
     const paperStyle = { padding: '30px 20px', width: 300, margin: "20px auto" }
     const avatarStyle = { backgroundColor: '#1bbd7e' }
@@ -32,9 +32,7 @@ export const LoginPage: FC<{}> = () => {
 
     const navigate = useNavigate()
     const dispatch = useAppDispatch()
-    
-
-    const {token} = useAppSelector((state): any => state.todos)
+    const {token} = useAppSelector((state): any => state.auth)
 
     const [loginData, setLoginData] = useState<LoginType>({
         username: "",
