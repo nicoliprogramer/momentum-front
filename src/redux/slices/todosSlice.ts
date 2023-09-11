@@ -14,12 +14,18 @@ const initialState: todosState = {
     todos: []
 };
 
+const token = localStorage.getItem("token")
+const config = {
+    headers: { Authorization: `Bearer ${token}` }
+};
+
+
 
 export const createTodo = createAsyncThunk(
   'todos/CREATE_TODO',
   async (body: any, {dispatch}: any): Promise<void> => {
     try {
-      const response = await axiosInternal.post("/todos/create", body)
+      const response = await axiosInternal.post("/todos/create", body, config)
     if(response.status === 200 || response.status === 201){
         console.log("todo created");
         return response.data
@@ -38,7 +44,7 @@ export const deleteTodo = createAsyncThunk(
   'todos/DELETE_TODO',
   async (id: any, {dispatch}: any): Promise<void> => {
     try {
-      const response = await axiosInternal.delete(`/todos/${id}`)
+      const response = await axiosInternal.delete(`/todos/${id}`, config)
     if(response.status === 200 || response.status === 201){
         console.log("todo deleted");
         return response.data
@@ -57,7 +63,7 @@ export const updateTodo = createAsyncThunk(
   'todos/UPDATE_TODO',
   async (data: any, {dispatch}: any): Promise<void> => {
     try {
-      const response = await axiosInternal.put(`/todos/${data.id}`,{ completed: data.completed})
+      const response = await axiosInternal.put(`/todos/${data.id}`,{ completed: data.completed}, config)
     if(response.status === 200 || response.status === 201){
         console.log("todo is completed or not completed");
         return response.data
@@ -76,7 +82,7 @@ export const shareTodo = createAsyncThunk(
   'todos/SHARE_TODO',
   async (data: any, {dispatch}: any): Promise<void> => {
     try { 
-      const response = await axiosInternal.post(`/todos/shared_todos`,{ todo_id: data.id, user_id: data.user_id, email: data.shareToUser})
+      const response = await axiosInternal.post(`/todos/shared_todos`,{ todo_id: data.id, user_id: data.user_id, email: data.shareToUser}, config)
     if(response.status === 200 || response.status === 201){
         return response.data
     }
@@ -94,7 +100,7 @@ export const verifyUsers = createAsyncThunk(
   'todos/VERIFY_USERS',
   async (data: any, {dispatch}: any): Promise<void> => {
     try { 
-      const response = await axiosInternal.post(`/users`,{ data })
+      const response = await axiosInternal.post(`/users`, { data }, config)
     if(response.status === 200 || response.status === 201){
       throw response.status
     }

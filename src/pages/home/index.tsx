@@ -4,7 +4,7 @@ import {TodosList} from "../../components/todos/todosList"
 import { Typetodo } from "./interface/todo.interface"
 import { todos } from "../../api/todos"
 import SendIcon from '@mui/icons-material/Send';
-import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { useAppDispatch } from "../../redux/hooks";
 import { createTodo } from "../../redux/slices/todosSlice"
 
 type TodoType = { 
