@@ -8,7 +8,7 @@ import { useAppDispatch } from "../../redux/hooks";
 import { createTodo } from "../../redux/slices/todosSlice"
 
 type TodoType = { 
-    user_id: string,
+    user_id: any,
     title: string
 }
 export const HomePage: FC<{}> = () => {
@@ -28,8 +28,9 @@ export const HomePage: FC<{}> = () => {
         })
     }, [page])
 
+const id = localStorage.getItem("id");
 const dataTodo = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setMessageBody({...messageBody, user_id: "1", [e.target.name]: e.target.value})
+        setMessageBody({...messageBody, user_id: id, [e.target.name]: e.target.value})
         
     }
 

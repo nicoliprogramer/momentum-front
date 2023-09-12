@@ -23,7 +23,7 @@ export const signIn = createAsyncThunk(
                 showConfirmButton: false,
                 timer: 1400
               })
-              
+        localStorage.setItem("id", response.data.id)
         localStorage.setItem("token", response.data.token)
         return response.data.token
     }
@@ -55,7 +55,7 @@ export const signUp = createAsyncThunk(
                 showConfirmButton: false,
                 timer: 1400
               })
-      
+        localStorage.setItem("id", response.data.id)
         localStorage.setItem("token", response.data.token)
         return response.data.token
     }

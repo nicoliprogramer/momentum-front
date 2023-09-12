@@ -1,6 +1,7 @@
 import { axiosInternal } from "./todos.api"
 
-const endpoint = "/todos/1"
+const id = localStorage.getItem("id")
+const endpoint = `/todos/${id}`
 
 export const todos = {
     getAll: function(){
